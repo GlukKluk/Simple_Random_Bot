@@ -1,25 +1,23 @@
 from aiogram import Router
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, StateFilter
+from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
+from aiogram.fsm.state import default_state
 
-from keyboards.user_keyboard import StartMarkup
+from keyboards.user_keyboards import start_markup
+import data
 
 
 user_handler_router = Router()
 
 
-@user_handler_router.message(CommandStart())
-async def command_start(message: Message):
+@user_handler_router.message(CommandStart(), StateFilter(default_state))
+async def command_start(message: Message, state: FSMContext):
     await message.answer(
-        text='🤖 Випадковий Бот 🤖'
-             '\n\n⚙ Що ж він вміє:'
-             '\n🔢 Згенерувати випадкове число'
-             '\n🔐 Згенерувати пароль'
-             '\n🗃 Вибрати випадковий варіант зі списку'
-             '\n🤩 Надіслати випадкову Telegram емоджі'
-             '\n🎲 Кинути кубик'
-             '\n\n🔆 Цей бот абсолютно безкоштовний 🔆'
-             '\n\n⬇️ Щоб розпочати натисніть "🌀 Випадковість"',
+        text=data.start_text,
+        reply_markup=start_markup
+    )
 
-        reply_markup=StartMarkup
+    await state.update_data(
+        {"stored_data": data.user_datas[0]}
     )
