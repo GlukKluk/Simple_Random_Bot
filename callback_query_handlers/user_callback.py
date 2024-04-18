@@ -5,6 +5,7 @@ from aiogram.fsm.state import default_state
 
 import data
 from keyboards.user_keyboards import start_markup, randomness_markup, back_markup
+from states.user_states import RandomNumberStates
 
 
 user_callback_router = Router()
@@ -55,3 +56,5 @@ async def random_number_input(callback: CallbackQuery, state: FSMContext):
              "\n<pre>&lt;число1&gt; - &lt;число2&gt;</pre>",
         reply_markup=back_markup
     )
+
+    await state.set_state(RandomNumberStates.random_number_input)
