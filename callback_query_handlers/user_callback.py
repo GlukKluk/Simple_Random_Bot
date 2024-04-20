@@ -45,6 +45,20 @@ async def back(callback: CallbackQuery, state: FSMContext):
     await state.set_state(default_state)
 
 
+@user_callback_router.callback_query(F.data == "retry")
+async def retry(callback: CallbackQuery, state: FSMContext):
+    stored_data = await state.get_data()
+
+    if stored_data["stored_data"] == data.user_datas[1]:
+
+        await callback.message.edit_text(
+            text=data.range_input,
+            reply_markup=back_markup
+        )
+
+        await state.set_state(RandomNumberStates.random_number_input)
+
+
 @user_callback_router.callback_query(F.data == "random_number")
 async def random_number_input(callback: CallbackQuery, state: FSMContext):
     await state.update_data(
@@ -52,8 +66,7 @@ async def random_number_input(callback: CallbackQuery, state: FSMContext):
     )
 
     await callback.message.edit_text(
-        text="Введіть діапазон у форматі:"
-             "\n<pre>&lt;число1&gt; - &lt;число2&gt;</pre>",
+        text=data.range_input,
         reply_markup=back_markup
     )
 

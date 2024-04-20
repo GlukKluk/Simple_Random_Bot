@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
-back_button = InlineKeyboardButton(text="🔙 Назад", callback_data="back")
+back_button = InlineKeyboardButton(text="⬅️ Назад", callback_data="back")
 
 start_markup = InlineKeyboardMarkup(
     inline_keyboard=[
@@ -33,6 +33,8 @@ randomness_markup = InlineKeyboardMarkup(
         ]
     ]
 )
+
+retry_button = InlineKeyboardButton(text="🔄 Ще раз", callback_data="retry")
 
 back_markup = InlineKeyboardMarkup(
     inline_keyboard=[

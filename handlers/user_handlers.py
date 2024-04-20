@@ -3,11 +3,11 @@ from random import randint
 from aiogram import Router, F
 from aiogram.filters import CommandStart, StateFilter
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message
+from aiogram.types import Message, InlineKeyboardMarkup
 from aiogram.fsm.state import default_state
 
 import data
-from keyboards.user_keyboards import start_markup
+from keyboards.user_keyboards import start_markup, back_button, retry_button
 from states.user_states import RandomNumberStates
 
 
@@ -35,5 +35,11 @@ async def random_number(message: Message):
     random_num = randint(int(num1), int(num2))
 
     await message.answer(
-        text=f"Випадкове число: {random_num}"
+        text=f"Випадкове число: {random_num}",
+        reply_markup=InlineKeyboardMarkup(
+            inline_keyboard=[
+                [retry_button],
+                [back_button]
+            ]
+        )
     )
