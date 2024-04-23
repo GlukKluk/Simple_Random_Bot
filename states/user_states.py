@@ -1,5 +1,6 @@
 from aiogram.fsm.state import State, StatesGroup
 
 
-class RandomNumberStates(StatesGroup):
+class UserStates(StatesGroup):
     random_number_input = State()
+    password_length_input = State()

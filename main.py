@@ -20,12 +20,14 @@ async def main():
     bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher(storage=MemoryStorage())
 
-    dp.include_router(user_handler_router)
-    dp.include_router(other_handler_router)
-    dp.include_router(user_callback_router)
+    dp.include_routers(
+        user_handler_router,
+        other_handler_router,
+        user_callback_router
+    )
 
     await dp.start_polling(bot)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(main())

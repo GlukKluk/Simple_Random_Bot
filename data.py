@@ -1,8 +1,12 @@
+from string import ascii_letters, digits
+
 user_datas = [
     "start",
     "randomness",
     "random_number_input"
 ]
+
+symbols = list(ascii_letters + digits + "!#$%&?@")
 
 start_text = ('<b>🤖 Випадковий Бот 🤖</b>'
               '\n\n⚙ Що ж він вміє:'
@@ -21,3 +25,5 @@ randomness_SelectButton_text = (
 
 range_input = ("Введіть діапазон у форматі:"
                "\n<pre>&lt;число1&gt; - &lt;число2&gt;</pre>")
+
+password_length_input = "Введіть довжину пароля:"

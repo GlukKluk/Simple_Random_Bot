@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, choice
 
 from aiogram import Router, F
 from aiogram.filters import CommandStart, StateFilter
@@ -8,7 +8,7 @@ from aiogram.fsm.state import default_state
 
 import data
 from keyboards.user_keyboards import start_markup, back_button, retry_button
-from states.user_states import RandomNumberStates
+from states.user_states import UserStates
 
 
 user_handler_router = Router()
@@ -28,14 +28,14 @@ async def command_start(message: Message, state: FSMContext):
 
 @user_handler_router.message(
     F.text.regexp(r"\d+\s{0,1}-\s{0,1}\d+"),
-    StateFilter(RandomNumberStates.random_number_input)
+    StateFilter(UserStates.random_number_input)
 )
 async def random_number(message: Message):
     num1, num2 = message.text.split("-")
     random_num = randint(int(num1), int(num2))
 
     await message.answer(
-        text=f"Випадкове число: {random_num}",
+        text=f"Випадкове число: <code>{random_num}</code>",
         reply_markup=InlineKeyboardMarkup(
             inline_keyboard=[
                 [retry_button],
@@ -43,3 +43,26 @@ async def random_number(message: Message):
             ]
         )
     )
+
+
+@user_handler_router.message(
+    F.text.isdigit(),
+    StateFilter(UserStates.password_length_input)
+)
+async def generate_password(message: Message):
+    password = ""
+
+    for i in range(int(message.text)):
+        password += choice(data.symbols)
+
+    await message.answer(
+        text=f"Випадковий пароль: <code>{password}</code>",
+        reply_markup=InlineKeyboardMarkup(
+            inline_keyboard=[
+                [retry_button],
+                [back_button]
+            ]
+        )
+    )
+
+
