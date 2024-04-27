@@ -1,5 +1,6 @@
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
+from aiogram.filters import StateFilter
 from aiogram.types import CallbackQuery
 from aiogram.fsm.state import default_state
 
@@ -11,7 +12,7 @@ from states.user_states import UserStates
 user_callback_router = Router()
 
 
-@user_callback_router.callback_query(F.data == "randomness")
+@user_callback_router.callback_query(F.data == "randomness", StateFilter(UserStates.first_state))
 async def randomness(callback: CallbackQuery, state: FSMContext):
     await state.update_data(
         {"stored_data": data.user_datas[0]}
@@ -42,7 +43,7 @@ async def back(callback: CallbackQuery, state: FSMContext):
             reply_markup=randomness_markup
         )
 
-    await state.set_state(default_state)
+    await state.set_state(UserStates.first_state)
 
 
 @user_callback_router.callback_query(F.data == "retry")
@@ -71,7 +72,7 @@ async def retry(callback: CallbackQuery, state: FSMContext):
         )
 
 
-@user_callback_router.callback_query(F.data == "random_number")
+@user_callback_router.callback_query(F.data == "random_number", StateFilter(UserStates.first_state))
 async def random_number_input(callback: CallbackQuery, state: FSMContext):
     await state.update_data(
         {"stored_data": data.user_datas[1]}

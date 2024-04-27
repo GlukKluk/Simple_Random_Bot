@@ -21,6 +21,8 @@ async def command_start(message: Message, state: FSMContext):
         reply_markup=start_markup
     )
 
+    await state.set_state(UserStates.first_state)
+
     await state.update_data(
         {"stored_data": data.user_datas[0]}
     )
