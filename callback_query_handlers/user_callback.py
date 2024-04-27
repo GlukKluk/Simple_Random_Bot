@@ -47,20 +47,26 @@ async def back(callback: CallbackQuery, state: FSMContext):
 
 @user_callback_router.callback_query(F.data == "retry")
 async def retry(callback: CallbackQuery, state: FSMContext):
-    stored_data = await state.get_data()
     stored_state = await state.get_state()
 
-    if stored_data["stored_data"] == data.user_datas[1] and stored_state == UserStates.random_number_input:
+    if stored_state == UserStates.random_number_input:
 
         await callback.message.edit_text(
-            text=data.range_input,
+            text=data.range_input_text,
             reply_markup=back_markup
         )
 
-    elif stored_data["stored_data"] == data.user_datas[1] and stored_state == UserStates.password_length_input:
+    elif stored_state == UserStates.password_length_input:
 
         await callback.message.edit_text(
             text=data.password_length_input,
+            reply_markup=back_markup
+        )
+
+    elif stored_state == UserStates.items_input:
+
+        await callback.message.edit_text(
+            text=data.items_input_text,
             reply_markup=back_markup
         )
 
@@ -72,7 +78,7 @@ async def random_number_input(callback: CallbackQuery, state: FSMContext):
     )
 
     await callback.message.edit_text(
-        text=data.range_input,
+        text=data.range_input_text,
         reply_markup=back_markup
     )
 
@@ -91,3 +97,17 @@ async def generate_password_input(callback: CallbackQuery, state: FSMContext):
     )
 
     await state.set_state(UserStates.password_length_input)
+
+
+@user_callback_router.callback_query(F.data == "select_item")
+async def select_item_input(callback: CallbackQuery, state: FSMContext):
+    await state.update_data(
+        {"stored_data": data.user_datas[1]}
+    )
+
+    await callback.message.edit_text(
+        text=data.items_input_text,
+        reply_markup=back_markup
+    )
+
+    await state.set_state(UserStates.items_input)

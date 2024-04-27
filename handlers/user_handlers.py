@@ -66,3 +66,19 @@ async def generate_password(message: Message):
     )
 
 
+@user_handler_router.message(
+    F.text.regexp(r"(\b\w+\b)(,\s\1)*"),
+    StateFilter(UserStates.items_input)
+)
+async def select_random_item(message: Message):
+    items_list = [item if item[0] != " " else item[1:] for item in message.text.split(",")]
+
+    await message.answer(
+        text=f"Випадковий елемент: <code>{choice(items_list)}</code>",
+        reply_markup=InlineKeyboardMarkup(
+            inline_keyboard=[
+                [retry_button],
+                [back_button]
+            ]
+        )
+    )
