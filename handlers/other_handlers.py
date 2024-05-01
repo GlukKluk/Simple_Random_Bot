@@ -37,10 +37,3 @@ async def incorrect_input(message: Message, state: FSMContext):
                  f"\n\n{data.password_length_input}",
             reply_markup=back_markup
         )
-
-    elif stored_state == UserStates.items_input:
-        await message.answer(
-            text=f"{incorrect}"
-                 f"\n\n{data.items_input_text}",
-            reply_markup=back_markup
-        )

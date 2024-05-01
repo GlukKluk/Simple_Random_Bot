@@ -23,20 +23,51 @@ async def randomness(callback: CallbackQuery, state: FSMContext):
     )
 
 
+@user_callback_router.callback_query(F.data == "about")
+@user_callback_router.callback_query(F.data == "additionally")
+async def about(callback: CallbackQuery, state: FSMContext):
+    await state.update_data(
+        {"stored_data": data.user_datas[0]}
+    )
+
+    await callback.message.edit_text(
+        text="@@@@@@@@@@@"
+             "\n@      <b>В розробці</b>      @"
+             "\n@@@@@@@@@@@",
+        reply_markup=back_markup
+    )
+
+
 @user_callback_router.callback_query(F.data == "back")
 async def back(callback: CallbackQuery, state: FSMContext):
     stored_data = await state.get_data()
+    stored_state = await state.get_state()
 
     if stored_data["stored_data"] == data.user_datas[0]:
+
         await callback.message.edit_text(
             text=data.start_text,
             reply_markup=start_markup
         )
 
+    elif stored_state == UserStates.roll_the_dice_state:
+
+        await state.update_data(
+            {"stored_data": data.user_datas[0]}
+        )
+
+        await callback.message.answer(
+            text=data.randomness_SelectButton_text,
+            reply_markup=randomness_markup
+        )
+
+        await callback.answer()
+
     elif stored_data["stored_data"] == data.user_datas[1]:
         await state.update_data(
             {"stored_data": data.user_datas[0]}
         )
+
         await callback.message.edit_text(
             text=data.randomness_SelectButton_text,
             reply_markup=randomness_markup
@@ -77,12 +108,12 @@ async def random_number_input(callback: CallbackQuery, state: FSMContext):
         {"stored_data": data.user_datas[1]}
     )
 
+    await state.set_state(UserStates.random_number_input)
+
     await callback.message.edit_text(
         text=data.range_input_text,
         reply_markup=back_markup
     )
-
-    await state.set_state(UserStates.random_number_input)
 
 
 @user_callback_router.callback_query(F.data == "generate_password")
@@ -91,12 +122,12 @@ async def generate_password_input(callback: CallbackQuery, state: FSMContext):
         {"stored_data": data.user_datas[1]}
     )
 
+    await state.set_state(UserStates.password_length_input)
+
     await callback.message.edit_text(
         text=data.password_length_input,
         reply_markup=back_markup
     )
-
-    await state.set_state(UserStates.password_length_input)
 
 
 @user_callback_router.callback_query(F.data == "select_item")
@@ -105,9 +136,38 @@ async def select_item_input(callback: CallbackQuery, state: FSMContext):
         {"stored_data": data.user_datas[1]}
     )
 
+    await state.set_state(UserStates.items_input)
+
     await callback.message.edit_text(
         text=data.items_input_text,
         reply_markup=back_markup
     )
 
-    await state.set_state(UserStates.items_input)
+
+@user_callback_router.callback_query(F.data == "roll_the_dice")
+async def roll_the_dice(callback: CallbackQuery, state: FSMContext):
+    await state.update_data(
+        {"stored_data": data.user_datas[1]}
+    )
+
+    await state.set_state(UserStates.roll_the_dice_state)
+
+    await callback.message.answer_dice(
+        reply_markup=back_markup
+    )
+
+    await callback.answer()
+
+
+@user_callback_router.callback_query(F.data == "other")
+async def other(callback: CallbackQuery, state: FSMContext):
+    await state.update_data(
+        {"stored_data": data.user_datas[1]}
+    )
+
+    await callback.message.edit_text(
+        text="@@@@@@@@@@@"
+             "\n@      <b>В розробці</b>      @"
+             "\n@@@@@@@@@@@",
+        reply_markup=back_markup
+    )
