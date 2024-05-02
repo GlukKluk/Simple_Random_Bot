@@ -1,11 +1,10 @@
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import StateFilter
-from aiogram.types import CallbackQuery
-from aiogram.fsm.state import default_state
+from aiogram.types import CallbackQuery, InlineKeyboardMarkup
 
 import data
-from keyboards.user_keyboards import start_markup, randomness_markup, back_markup
+from keyboards.user_keyboards import start_markup, randomness_markup, back_markup, retry_button, back_button
 from states.user_states import UserStates
 
 
@@ -24,8 +23,8 @@ async def randomness(callback: CallbackQuery, state: FSMContext):
     )
 
 
-@user_callback_router.callback_query(F.data == "about")
-@user_callback_router.callback_query(F.data == "additionally")
+@user_callback_router.callback_query(F.data == "about", StateFilter(UserStates.first_state))
+@user_callback_router.callback_query(F.data == "additionally", StateFilter(UserStates.first_state))
 async def about(callback: CallbackQuery, state: FSMContext):
     await state.update_data(
         {"stored_data": data.user_datas[0]}
@@ -102,6 +101,18 @@ async def retry(callback: CallbackQuery, state: FSMContext):
             reply_markup=back_markup
         )
 
+    elif stored_state == UserStates.roll_the_dice_state:
+        await callback.message.answer_dice(
+            reply_markup=InlineKeyboardMarkup(
+                inline_keyboard=[
+                    [retry_button],
+                    [back_button]
+                ]
+            )
+        )
+
+        await callback.answer()
+
 
 @user_callback_router.callback_query(F.data == "random_number", StateFilter(UserStates.first_state))
 async def random_number_input(callback: CallbackQuery, state: FSMContext):
@@ -117,7 +128,7 @@ async def random_number_input(callback: CallbackQuery, state: FSMContext):
     )
 
 
-@user_callback_router.callback_query(F.data == "generate_password")
+@user_callback_router.callback_query(F.data == "generate_password", StateFilter(UserStates.first_state))
 async def generate_password_input(callback: CallbackQuery, state: FSMContext):
     await state.update_data(
         {"stored_data": data.user_datas[1]}
@@ -131,7 +142,7 @@ async def generate_password_input(callback: CallbackQuery, state: FSMContext):
     )
 
 
-@user_callback_router.callback_query(F.data == "select_item")
+@user_callback_router.callback_query(F.data == "select_item", StateFilter(UserStates.first_state))
 async def select_item_input(callback: CallbackQuery, state: FSMContext):
     await state.update_data(
         {"stored_data": data.user_datas[1]}
@@ -145,7 +156,7 @@ async def select_item_input(callback: CallbackQuery, state: FSMContext):
     )
 
 
-@user_callback_router.callback_query(F.data == "roll_the_dice")
+@user_callback_router.callback_query(F.data == "roll_the_dice", StateFilter(UserStates.first_state))
 async def roll_the_dice(callback: CallbackQuery, state: FSMContext):
     await state.update_data(
         {"stored_data": data.user_datas[1]}
@@ -154,13 +165,18 @@ async def roll_the_dice(callback: CallbackQuery, state: FSMContext):
     await state.set_state(UserStates.roll_the_dice_state)
 
     await callback.message.answer_dice(
-        reply_markup=back_markup
+        reply_markup=InlineKeyboardMarkup(
+            inline_keyboard=[
+                [retry_button],
+                [back_button]
+            ]
+        )
     )
 
     await callback.answer()
 
 
-@user_callback_router.callback_query(F.data == "other")
+@user_callback_router.callback_query(F.data == "other", StateFilter(UserStates.first_state))
 async def other(callback: CallbackQuery, state: FSMContext):
     await state.update_data(
         {"stored_data": data.user_datas[1]}
