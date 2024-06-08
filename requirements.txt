@@ -2,3 +2,4 @@ python-dotenv
 redis
 
 aiogram
+sqlalchemy

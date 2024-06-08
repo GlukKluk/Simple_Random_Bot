@@ -6,21 +6,30 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import BotCommand, Message, InlineKeyboardMarkup
 from aiogram.exceptions import TelegramBadRequest
 
-from data import *
-from keyboards.user_keyboards import start_markup, back_markup, back_button, retry_button
-from states.user_states import UserStates
+from tgbot.data import *
+from tgbot.keyboards.user_keyboards import start_markup, back_markup, back_button, retry_button
+from tgbot.states.user_states import UserStates
+
+from database.repo.requests import RequestRepo
 
 
 router = Router()
 
 
 @router.message(CommandStart())
-async def command_start(message: Message, state: FSMContext):
+async def command_start(message: Message, state: FSMContext, repo: RequestRepo):
     await message.bot.set_my_commands(commands=[BotCommand(command="start", description="І почнеться наша розмова!")])
 
     await message.answer(
         text=start_text,
         reply_markup=start_markup
+    )
+
+    await repo.users_actions.create_tg_user(
+        user_id=message.from_user.id,
+        username=message.from_user.username,
+        first_name=message.from_user.first_name,
+        last_name=message.from_user.last_name,
     )
 
     await state.set_state(UserStates.first_state)

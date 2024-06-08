@@ -8,12 +8,14 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums.parse_mode import ParseMode
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 
-from config import load_config
+from database.repo.requests import RequestRepo
+from database.setup import create_db_engine, create_session_pool, create_tables
+from tgbot.config import load_config
 from utils.redis_main import create_redis_connect
 
-from handlers.user_handlers import router as user_handler_router
-from handlers.other_handlers import router as other_handler_router
-from callback_query_handlers.user_callback import router as user_callback_router
+from tgbot.handlers.user_handlers import router as user_handler_router
+from tgbot.handlers.other_handlers import router as other_handler_router
+from tgbot.callback_query_handlers.user_callback import router as user_callback_router
 
 
 config = load_config()
@@ -36,6 +38,14 @@ def main():
     )
     dp = Dispatcher(storage=RedisStorage(redis=redis_conn))
 
+    engine = create_db_engine()
+    session_pool = create_session_pool(engine=engine)
+
+    async with session_pool() as session:
+        repo = RequestRepo(session=session)
+
+    create_tables(engine)
+
     dp.startup.register(on_startup)
 
     dp.include_routers(
@@ -50,6 +60,7 @@ def main():
         dispatcher=dp,
         bot=bot,
         secret_token=config.webhook_setting.secret,
+        repo=repo
     )
     webhook_requests_handler.register(app, path=config.webhook_setting.path)
 

@@ -3,9 +3,9 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 from aiogram.filters import StateFilter
 
-from data import *
-from keyboards.user_keyboards import back_markup
-from states.user_states import UserStates
+from tgbot.data import *
+from tgbot.keyboards.user_keyboards import back_markup
+from tgbot.states.user_states import UserStates
 
 
 router = Router()

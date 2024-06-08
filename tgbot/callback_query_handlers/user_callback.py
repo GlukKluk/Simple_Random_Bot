@@ -4,10 +4,10 @@ from aiogram.filters import StateFilter
 from aiogram.types import CallbackQuery, InlineKeyboardMarkup
 from aiogram.exceptions import TelegramBadRequest
 
-from data import *
-from keyboards.user_keyboards import start_markup, randomness_markup, back_markup, retry_button, back_button
-from states.user_states import UserStates
-from handlers.user_handlers import random_number, generate_password, select_random_item
+from tgbot.data import *
+from tgbot.keyboards.user_keyboards import start_markup, randomness_markup, back_markup, retry_button, back_button
+from tgbot.states.user_states import UserStates
+from tgbot.handlers.user_handlers import random_number, generate_password, select_random_item
 
 
 router = Router()
