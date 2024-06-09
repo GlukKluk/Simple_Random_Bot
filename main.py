@@ -60,7 +60,6 @@ def main():
         dispatcher=dp,
         bot=bot,
         secret_token=config.webhook_setting.secret,
-        repo=repo
     )
     webhook_requests_handler.register(app, path=config.webhook_setting.path)
 
