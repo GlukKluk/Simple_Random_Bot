@@ -16,6 +16,7 @@ from utils.redis_main import create_redis_connect
 from tgbot.handlers.user_handlers import router as user_handler_router
 from tgbot.handlers.other_handlers import router as other_handler_router
 from tgbot.callback_query_handlers.user_callback import router as user_callback_router
+from tgbot.middlewares.database import DatabaseMiddleware
 
 
 config = load_config()
@@ -41,9 +42,6 @@ def main():
     engine = create_db_engine()
     session_pool = create_session_pool(engine=engine)
 
-    async with session_pool() as session:
-        repo = RequestRepo(session=session)
-
     create_tables(engine)
 
     dp.startup.register(on_startup)
@@ -54,13 +52,14 @@ def main():
         user_callback_router
     )
 
+    dp.update.outer_middleware(DatabaseMiddleware(ssession_pool))  # реєструємо мідлвар
+    
     app = web.Application()
 
     webhook_requests_handler = SimpleRequestHandler(
         dispatcher=dp,
         bot=bot,
         secret_token=config.webhook_setting.secret,
-        repo=repo
     )
     webhook_requests_handler.register(app, path=config.webhook_setting.path)
 
