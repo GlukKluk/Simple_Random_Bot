@@ -17,19 +17,9 @@ class DatabaseMiddleware(BaseMiddleware):
             data: Dict[str, Any],
     ):
         async with self.session_pool() as session:
-            repo = RequestsRepo(session)
-            event_from_user = data.get("event_from_user")
-
-            user = await repo.users_actions.create_tg_user(
-                user_id=event_from_user.id,
-                username=event_from_user.username,
-                first_name=event_from_user.first_name,
-                last_name=event_from_user.last_name,
-                
-            )
+            repo = RequestRepo(session)
 
             data['repo'] = repo
-            data['user'] = user
 
             result = await handler(event, data)
         return result

@@ -7,6 +7,7 @@ import dotenv
 @dataclass
 class TgBot:
     bot_token: str
+    admins_id: list[int]
 
 
 @dataclass
@@ -36,7 +37,8 @@ def load_config():
 
     return Config(
         tg_connect=TgBot(
-            bot_token=os.getenv("BOT_TOKEN")
+            bot_token=os.getenv("BOT_TOKEN"),
+            admins_id=list(map(int, os.getenv("ADMINS_ID").split(",")))
         ),
 
         redis_connect=RedisConnect(

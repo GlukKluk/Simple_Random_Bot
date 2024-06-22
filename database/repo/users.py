@@ -1,3 +1,4 @@
+from sqlalchemy import select, func
 from sqlalchemy.dialects.sqlite import insert
 
 from database.models.users import TgUser
@@ -13,7 +14,7 @@ class UserRepo(BaseRepo):
             last_name: str | None,
     ):
 
-        insert_query = (
+        stmt = (
             insert(TgUser)
             .values(
                 user_id=user_id,
@@ -32,7 +33,19 @@ class UserRepo(BaseRepo):
             .returning(TgUser)
         )
 
-        result = await self.session.execute(insert_query)
+        result = await self.session.execute(stmt)
 
         await self.session.commit()
         return result.scalar_one()
+
+    async def get_users_count(self):
+        stmt = (
+            select(
+                func.count()
+            )
+            .select_from(TgUser)
+        )
+
+        result = await self.session.execute(stmt)
+
+        return result.scalar()
