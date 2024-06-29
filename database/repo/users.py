@@ -1,4 +1,4 @@
-from sqlalchemy import select, func
+from sqlalchemy import select, update, func
 from sqlalchemy.dialects.sqlite import insert
 
 from database.models.users import TgUser
@@ -38,14 +38,32 @@ class UserRepo(BaseRepo):
         await self.session.commit()
         return result.scalar_one()
 
-    async def get_users_count(self):
+    async def get_users(self):
         stmt = (
             select(
-                func.count()
+                TgUser
             )
-            .select_from(TgUser)
         )
 
         result = await self.session.execute(stmt)
 
-        return result.scalar()
+        return result.scalars().all()
+
+    async def change_status(self, user_id: int, is_active: bool):
+        stmt = (
+            update(
+                TgUser
+            )
+            .where(
+                TgUser.user_id == user_id
+            )
+            .values(
+                is_active=is_active
+            )
+            .returning(TgUser)
+        )
+
+        result = await self.session.execute(stmt)
+        await self.session.commit()
+
+        return result.scalar_one()

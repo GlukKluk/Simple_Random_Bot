@@ -5,7 +5,7 @@ from aiogram.types import CallbackQuery, InlineKeyboardMarkup
 from aiogram.exceptions import TelegramBadRequest
 
 from tgbot.data import *
-from tgbot.keyboards.user_keyboards import start_markup, randomness_markup, back_markup, retry_button, back_button
+from tgbot.keyboards.user_keyboards import start_keyboard_func, randomness_markup, back_markup, retry_button, back_button
 from tgbot.states.user_states import UserStates
 from tgbot.handlers.user_handlers import random_number, generate_password, select_random_item
 
@@ -40,7 +40,7 @@ async def about(callback: CallbackQuery, state: FSMContext):
     )
 
 
-@router.callback_query(F.data == "back")
+@router.callback_query(F.data == "back", StateFilter(UserStates))
 async def back(callback: CallbackQuery, state: FSMContext):
     stored_data = await state.get_data()
     stored_state = await state.get_state()
@@ -62,7 +62,7 @@ async def back(callback: CallbackQuery, state: FSMContext):
 
         await callback.message.edit_text(
             text=start_text,
-            reply_markup=start_markup
+            reply_markup=start_keyboard_func()
         )
 
     elif stored_data["previous_page"] == user_datas[1]:
@@ -78,7 +78,7 @@ async def back(callback: CallbackQuery, state: FSMContext):
     await state.set_state(UserStates.first_state)
 
 
-@router.callback_query(F.data == "retry")
+@router.callback_query(F.data == "retry", StateFilter(UserStates))
 async def retry(callback: CallbackQuery, state: FSMContext):
     try:
         stored_state = await state.get_state()

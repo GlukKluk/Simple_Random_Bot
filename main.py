@@ -7,15 +7,18 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums.parse_mode import ParseMode
+from aiogram.enums.update_type import UpdateType
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 
 from database.setup import create_db_engine, create_session_pool, init_models
 from tgbot.config import load_config
+from tgbot.handlers.bot_commands import UserCommands
 from utils.redis_main import create_redis_connect
 
-from tgbot.handlers.user_handlers import router as user_handler_router
 from tgbot.handlers.admin_handlers import router as admin_handler_router
+from tgbot.handlers.user_handlers import router as user_handler_router
 from tgbot.handlers.other_handlers import router as other_handler_router
+from tgbot.callback_query_handlers.admin_callback import router as admin_callback_router
 from tgbot.callback_query_handlers.user_callback import router as user_callback_router
 from tgbot.middlewares.db_middlewares import DatabaseMiddleware
 
@@ -26,9 +29,12 @@ config = load_config()
 async def on_startup(bot: Bot, engine) -> None:
     await bot.set_webhook(
         url=f"{config.webhook_setting.base_url}{config.webhook_setting.path}",
-        secret_token=config.webhook_setting.secret
+        secret_token=config.webhook_setting.secret,
+        allowed_updates=list(UpdateType)
     )
     await init_models(engine=engine)
+
+    await bot.set_my_commands(commands=[UserCommands.start])
 
 
 def main():
@@ -52,6 +58,7 @@ def main():
         user_handler_router,
         other_handler_router,
 
+        admin_callback_router,
         user_callback_router
     )
 

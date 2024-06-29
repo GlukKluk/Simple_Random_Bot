@@ -9,11 +9,3 @@ class UserCommands:
         command="start",
         description="І почнеться наша розмова!"
     )
-
-
-@dataclass
-class AdminCommands:
-    statistic: BotCommand = BotCommand(
-        command="statistic",
-        description="Статистика бота. ТІЛЬКИ ДЛЯ АДМІНІВ!"
-    )

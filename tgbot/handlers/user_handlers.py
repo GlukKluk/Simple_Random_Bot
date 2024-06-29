@@ -1,14 +1,13 @@
 from random import randint, choice
 
 from aiogram import Router, F
-from aiogram.filters import CommandStart, StateFilter
+from aiogram.filters import CommandStart, StateFilter, ChatMemberUpdatedFilter, IS_MEMBER, IS_NOT_MEMBER
 from aiogram.fsm.context import FSMContext
-from aiogram.types import BotCommand, Message, InlineKeyboardMarkup
+from aiogram.types import Message, InlineKeyboardMarkup, ChatMemberUpdated
 from aiogram.exceptions import TelegramBadRequest
 
 from tgbot.data import *
-from tgbot.handlers.bot_commands import UserCommands
-from tgbot.keyboards.user_keyboards import start_markup, back_markup, back_button, retry_button
+from tgbot.keyboards.user_keyboards import start_keyboard_func, back_markup, back_button, retry_button
 from tgbot.states.user_states import UserStates
 
 from database.repo.requests import RequestRepo
@@ -19,11 +18,9 @@ router = Router()
 
 @router.message(CommandStart())
 async def command_start(message: Message, state: FSMContext, repo: RequestRepo):
-    await message.bot.set_my_commands(commands=[UserCommands.start])
-
     await message.answer(
         text=start_text,
-        reply_markup=start_markup
+        reply_markup=start_keyboard_func()
     )
 
     await repo.users_actions.create_tg_user(
@@ -191,3 +188,15 @@ async def select_random_item(message: Message, state: FSMContext, retry_button_p
                  f"\n\n<i>{items_input_text[:7]} новий {items_input_text[8:]}</i>",
             reply_markup=back_markup
         )
+
+
+@router.chat_member(ChatMemberUpdatedFilter(IS_MEMBER >> IS_NOT_MEMBER))
+@router.my_chat_member(ChatMemberUpdatedFilter(IS_MEMBER >> IS_NOT_MEMBER))
+async def set_user_not_member_status(event: ChatMemberUpdated, repo: RequestRepo):
+    await repo.users_actions.change_status(user_id=event.from_user.id, is_active=False)
+
+
+@router.chat_member(ChatMemberUpdatedFilter(IS_NOT_MEMBER >> IS_MEMBER))
+@router.my_chat_member(ChatMemberUpdatedFilter(IS_NOT_MEMBER >> IS_MEMBER))
+async def set_user_member_status(event: ChatMemberUpdated, repo: RequestRepo):
+    await repo.users_actions.change_status(user_id=event.from_user.id, is_active=True)
