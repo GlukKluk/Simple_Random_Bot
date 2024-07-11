@@ -14,7 +14,7 @@ from database.repo.requests import RequestRepo
 config = load_config()
 
 router = Router()
-router.message.filter(AdminFilter(admins_id=config.tg_connect.admins_id))
+# router.message.filter(AdminFilter(admins_id=config.tg_connect.admins_id))
 
 
 @router.message(CommandStart())

@@ -6,9 +6,11 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, InlineKeyboardMarkup, ChatMemberUpdated
 from aiogram.exceptions import TelegramBadRequest
 
+from aiogram_dialog import DialogManager, StartMode
+
 from tgbot.data import *
 from tgbot.keyboards.user_keyboards import start_keyboard_func, back_markup, back_button, retry_button
-from tgbot.states.user_states import UserStates
+from tgbot.states.user_states import UserStates, StartSG
 
 from database.repo.requests import RequestRepo
 
@@ -17,20 +19,22 @@ router = Router()
 
 
 @router.message(CommandStart())
-async def command_start(message: Message, state: FSMContext, repo: RequestRepo):
-    await message.answer(
-        text=start_text,
-        reply_markup=start_keyboard_func()
-    )
+async def command_start(message: Message, state: FSMContext, repo: RequestRepo, dialog_manager: DialogManager):
+    # await message.answer(
+    #     text=start_text,
+    #     reply_markup=start_keyboard_func()
+    # )
+    #
+    # await repo.users_actions.create_tg_user(
+    #     user_id=message.from_user.id,
+    #     username=message.from_user.username,
+    #     first_name=message.from_user.first_name,
+    #     last_name=message.from_user.last_name,
+    # )
+    #
+    # await state.set_state(UserStates.first_state)
 
-    await repo.users_actions.create_tg_user(
-        user_id=message.from_user.id,
-        username=message.from_user.username,
-        first_name=message.from_user.first_name,
-        last_name=message.from_user.last_name,
-    )
-
-    await state.set_state(UserStates.first_state)
+    await dialog_manager.start(state=StartSG.start, mode=StartMode.RESET_STACK)
 
 
 @router.message(

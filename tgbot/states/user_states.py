@@ -8,3 +8,11 @@ class UserStates(StatesGroup):
     password_length_input = State()
     items_input = State()
     roll_the_dice_state = State()
+
+
+class StartSG(StatesGroup):
+    start = State()
+
+
+class RandomnessSG(StatesGroup):
+    start = State()
