@@ -37,6 +37,6 @@ start_dialog = Dialog(
                 # on_click=
             )
         ),
-        state=StartSG.start
+        state=StartSG.start_st
     )
 )

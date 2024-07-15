@@ -3,6 +3,8 @@ from aiogram_dialog.widgets.kbd import Button, Row
 from aiogram_dialog.widgets.text import Const
 
 from tgbot.states.user_states import RandomnessSG
+from .handlers import *
+from ..back import back_button
 
 randomness_dialog = Dialog(
     Window(
@@ -11,7 +13,7 @@ randomness_dialog = Dialog(
             Button(
                 text=Const("🔢 Випадкове число"),
                 id="random_number",
-                # on_click=
+                on_click=switch_to_random_number
             ),
             Button(
                 text=Const("🔐 Згенерувати пароль"),
@@ -32,10 +34,11 @@ randomness_dialog = Dialog(
             )
         ),
         Button(
-            text=Const("⬅️ Назад"),
-            id="back",
+            text=Const("🧐 Інше"),
+            id="other",
             # on_click=
         ),
-        state=RandomnessSG.start
+        back_button,
+        state=RandomnessSG.randomness_st
     )
 )

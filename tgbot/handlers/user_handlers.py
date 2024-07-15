@@ -25,16 +25,16 @@ async def command_start(message: Message, state: FSMContext, repo: RequestRepo, 
     #     reply_markup=start_keyboard_func()
     # )
     #
-    # await repo.users_actions.create_tg_user(
-    #     user_id=message.from_user.id,
-    #     username=message.from_user.username,
-    #     first_name=message.from_user.first_name,
-    #     last_name=message.from_user.last_name,
-    # )
+    await repo.users_actions.create_tg_user(
+        user_id=message.from_user.id,
+        username=message.from_user.username,
+        first_name=message.from_user.first_name,
+        last_name=message.from_user.last_name
+    )
     #
     # await state.set_state(UserStates.first_state)
 
-    await dialog_manager.start(state=StartSG.start, mode=StartMode.RESET_STACK)
+    await dialog_manager.start(state=StartSG.start_st, mode=StartMode.RESET_STACK)
 
 
 @router.message(

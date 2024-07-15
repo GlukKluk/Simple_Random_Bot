@@ -11,8 +11,28 @@ class UserStates(StatesGroup):
 
 
 class StartSG(StatesGroup):
-    start = State()
+    start_st = State()
 
 
 class RandomnessSG(StatesGroup):
-    start = State()
+    randomness_st = State()
+
+
+class RandomNumberSG(StatesGroup):
+    random_number_input_st = State()
+    random_number_generated_st = State()
+    random_number_error_st = State()
+
+
+class GeneratePasswordSG(StatesGroup):
+    generate_password_st = State()
+    password_length_input_st = State()
+
+
+class SelectItemSG(StatesGroup):
+    select_item_st = State()
+    items_input_st = State()
+
+
+class RollTheDiceSG(StatesGroup):
+    roll_the_dice_st = State()

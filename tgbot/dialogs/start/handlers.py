@@ -6,7 +6,7 @@ from aiogram_dialog.widgets.kbd import Button
 from tgbot.states.user_states import RandomnessSG
 
 
-async def switch_to_randomness(callback: CallbackQuery, button: Button, dialog_manager: DialogManager):
-    await dialog_manager.start(RandomnessSG.start)
+async def switch_to_randomness(callback: CallbackQuery, widget: Button, dialog_manager: DialogManager):
+    await dialog_manager.start(RandomnessSG.randomness_st)
 
-    await dialog_manager.switch_to(RandomnessSG.start)
+    await dialog_manager.switch_to(RandomnessSG.randomness_st)

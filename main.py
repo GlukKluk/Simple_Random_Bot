@@ -16,8 +16,7 @@ from tgbot.config import load_config
 from tgbot.handlers.bot_commands import UserCommands
 from utils.redis_main import create_redis_connect
 
-from tgbot.dialogs.start.dialogs import start_dialog
-from tgbot.dialogs.randomness.dialogs import randomness_dialog
+from tgbot.dialogs import dialogs_list
 
 from tgbot.handlers.admin_handlers import router as admin_handler_router
 from tgbot.handlers.user_handlers import router as user_handler_router
@@ -59,8 +58,7 @@ def main():
     dp.startup.register(on_startup)
 
     dp.include_routers(
-        start_dialog,
-        randomness_dialog,
+        *dialogs_list,
 
         # admin_handler_router,
         user_handler_router,
