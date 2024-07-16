@@ -4,6 +4,7 @@ from aiogram_dialog import setup_dialogs
 from aiohttp import web
 
 from aiogram import Bot, Dispatcher
+
 # from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.client.default import DefaultBotProperties
@@ -34,7 +35,7 @@ async def on_startup(bot: Bot, engine) -> None:
     await bot.set_webhook(
         url=f"{config.webhook_setting.base_url}{config.webhook_setting.path}",
         secret_token=config.webhook_setting.secret,
-        allowed_updates=list(UpdateType)
+        allowed_updates=list(UpdateType),
     )
     await init_models(engine=engine)
 
@@ -47,10 +48,10 @@ def main():
 
     bot = Bot(
         token=config.tg_connect.bot_token,
-        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
     # dp = Dispatcher(storage=RedisStorage(redis=redis_conn))
-    dp = Dispatcher(storage=MemoryStorage())
+    dp = Dispatcher(storage=MemoryStorage(), admin_ids=config.tg_connect.admins_id)
 
     engine = create_db_engine(echo=True)
     session_pool = create_session_pool(engine=engine)
@@ -58,10 +59,9 @@ def main():
     dp.startup.register(on_startup)
 
     dp.include_routers(
-        *dialogs_list,
-
-        # admin_handler_router,
         user_handler_router,
+        *dialogs_list,
+        # admin_handler_router,
         # other_handler_router,
         #
         # admin_callback_router,
@@ -71,7 +71,7 @@ def main():
     setup_dialogs(dp)
 
     dp.update.outer_middleware(DatabaseMiddleware(session_pool))  # реєструємо мідлвар
-    
+
     app = web.Application()
 
     webhook_requests_handler = SimpleRequestHandler(
