@@ -13,9 +13,9 @@ async def switch_to_random_number(callback: CallbackQuery, widget: Button, dialo
 
 
 async def switch_to_generate_password(callback: CallbackQuery, widget: Button, dialog_manager: DialogManager):
-    await dialog_manager.start(GeneratePasswordSG.generate_password_st)
+    await dialog_manager.start(GeneratePasswordSG.password_length_input_st)
 
-    await dialog_manager.switch_to(GeneratePasswordSG.generate_password_st)
+    await dialog_manager.switch_to(GeneratePasswordSG.password_length_input_st)
 
 
 async def switch_to_select_item(callback: CallbackQuery, widget: Button, dialog_manager: DialogManager):

@@ -1,6 +1,6 @@
 from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.input import TextInput
-from aiogram_dialog.widgets.kbd import SwitchTo
+from aiogram_dialog.widgets.kbd import Button, SwitchTo
 from aiogram_dialog.widgets.text import Const, Format
 
 from tgbot.states.user_states import RandomNumberSG
@@ -19,7 +19,7 @@ random_number_dialog = Dialog(
     Window(
         Const(
             text="Введіть діапазон у форматі:"
-            "\n<pre>&lt;число1&gt; - &lt;число2&gt;</pre>"
+                 "\n<pre>&lt;число1&gt; - &lt;число2&gt;</pre>"
         ),
         TextInput(
             id="random_number_input",
@@ -33,7 +33,7 @@ random_number_dialog = Dialog(
     Window(
         Format(
             text="<b>Випадкове число:</b> <code>{random_number}</code>"
-            '\n\nЩоб згенерувати ще раз натисніть кнопку <b>"🔄 Ще раз"</b>"'
+                 '\n\nЩоб згенерувати ще раз натисніть кнопку <b>"🔄 Ще раз"</b>"'
         ),
         SwitchTo(
             text=Const("✏️ Новий діапазон"),
@@ -49,8 +49,8 @@ random_number_dialog = Dialog(
     Window(
         Const(
             text="<b>Неправильно!</b>"
-            "\nВведіть діапазон у форматі:"
-            "\n<pre>&lt;число1&gt; - &lt;число2&gt;</pre>"
+                 "\nВведіть діапазон у форматі:"
+                 "\n<pre>&lt;число1&gt; - &lt;число2&gt;</pre>"
         ),
         TextInput(
             id="random_number_input",

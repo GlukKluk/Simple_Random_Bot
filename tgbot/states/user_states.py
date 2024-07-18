@@ -41,8 +41,9 @@ class GeneratePasswordSG(StatesGroup):
     Third level: GENERATE PASSWORD
     """
 
-    generate_password_st = State()
     password_length_input_st = State()
+    password_length_generated_st = State()
+    password_length_error_st = State()
 
 
 class SelectItemSG(StatesGroup):

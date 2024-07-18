@@ -103,7 +103,7 @@ async def random_number(
 async def generate_password(
     message: Message, state: FSMContext, retry_button_pressed: bool = False
 ):
-    # :TODO remake with dialogs
+    # :TODO delete
 
     stored_data = await state.get_data()
 

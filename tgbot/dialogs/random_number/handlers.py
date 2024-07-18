@@ -32,7 +32,8 @@ async def retry(callback: CallbackQuery, widget: Button, dialog_manager: DialogM
 
     await callback.answer("⚠️ Згенеровано")
     await dialog_manager.switch_to(
-        state=RandomNumberSG.random_number_generated_st, show_mode=ShowMode.EDIT
+        state=RandomNumberSG.random_number_generated_st,
+        show_mode=ShowMode.EDIT
     )
 
 
@@ -68,5 +69,6 @@ async def error_random_number_handler(
     error: ValueError,
 ):
     await dialog_manager.switch_to(
-        state=RandomNumberSG.random_number_error_st, show_mode=ShowMode.SEND
+        state=RandomNumberSG.random_number_error_st,
+        show_mode=ShowMode.SEND
     )
