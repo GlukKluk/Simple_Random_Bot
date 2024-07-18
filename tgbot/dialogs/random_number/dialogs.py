@@ -3,8 +3,6 @@ from aiogram_dialog.widgets.input import TextInput
 from aiogram_dialog.widgets.kbd import SwitchTo
 from aiogram_dialog.widgets.text import Const, Format
 
-from tgbot.states.user_states import RandomNumberSG
-
 from .getters import get_random_number
 from .handlers import *
 from ..back import back_button
@@ -33,6 +31,7 @@ random_number_dialog = Dialog(
             text=Const("✏️ Новий діапазон"),
             id="new_range",
             state=RandomNumberSG.random_number_input_st,
+            on_click=clear_stored_range,
         ),
         Button(text=Const("Ще раз 🔄"), id="retry", on_click=retry),
         back_button,

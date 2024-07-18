@@ -9,22 +9,17 @@ from aiogram_dialog.widgets.kbd import Button
 from tgbot.states.user_states import RandomNumberSG
 
 
-def number_check(text: str):
-    num1, num2 = text.split("-")
+def number_check(numbers_range: str):
+    num1, num2 = numbers_range.split("-")
 
-    if fullmatch(pattern=r"\d+\s{0,1}-\s{0,1}\d+", string=text) and int(num1) < int(
-        num2
-    ):
-        return text
+    if fullmatch(pattern=r"\d+\s{0,1}-\s{0,1}\d+", string=numbers_range) and int(num1) < int(num2):
+        return numbers_range
 
     raise ValueError
 
 
-async def generate_random_number(dialog_manager: DialogManager, text: str = None):
-    if not text:
-        text = dialog_manager.dialog_data.get("stored_range")
-
-    num1, num2 = text.split("-")
+async def generate_random_number(dialog_manager: DialogManager, numbers_range: str = None):
+    num1, num2 = numbers_range.split("-")
 
     random_number = randint(int(num1), int(num2))
     dialog_manager.dialog_data.update(random_number=random_number)
@@ -35,26 +30,34 @@ async def retry(callback: CallbackQuery, widget: Button, dialog_manager: DialogM
 
     await generate_random_number(dialog_manager, stored_range)
 
-    await callback.answer("Згенеровано!")
+    await callback.answer("⚠️ Згенеровано")
     await dialog_manager.switch_to(
         state=RandomNumberSG.random_number_generated_st, show_mode=ShowMode.EDIT
     )
 
 
+async def clear_stored_range(callback: CallbackQuery, widget: Button, dialog_manager: DialogManager):
+    dialog_manager.dialog_data.pop("stored_range")
+
+
 async def correct_random_number_handler(
-    message: Message, widget: ManagedTextInput, dialog_manager: DialogManager, text: str
+    message: Message,
+    widget: ManagedTextInput,
+    dialog_manager: DialogManager,
+    numbers_range: str,
 ):
     dialog_manager.show_mode = ShowMode.NO_UPDATE
 
     stored_range = dialog_manager.dialog_data.get("stored_range")
 
     if not stored_range:
-        dialog_manager.dialog_data.update(stored_range=text)
+        dialog_manager.dialog_data.update(stored_range=numbers_range)
 
-    await generate_random_number(dialog_manager, text)
+    await generate_random_number(dialog_manager, numbers_range)
 
     await dialog_manager.switch_to(
-        state=RandomNumberSG.random_number_generated_st, show_mode=ShowMode.SEND
+        state=RandomNumberSG.random_number_generated_st,
+        show_mode=ShowMode.SEND
     )
 
 
