@@ -3,8 +3,16 @@ from aiogram_dialog.widgets.input import TextInput
 from aiogram_dialog.widgets.kbd import SwitchTo
 from aiogram_dialog.widgets.text import Const, Format
 
+from tgbot.states.user_states import RandomNumberSG
+
 from .getters import get_random_number
-from .handlers import *
+from .handlers import (
+    number_check,
+    retry,
+    clear_stored_range,
+    correct_random_number_handler,
+    error_random_number_handler,
+)
 from ..back import back_button
 
 random_number_dialog = Dialog(
