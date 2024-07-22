@@ -14,7 +14,7 @@ symbols = list(ascii_letters + digits + "/!#$%&?@:;-")
 
 
 def password_check(text: str):
-    if text.isdigit():
+    if text.isdigit() and int(text) <= 4000:
         return text
 
     raise ValueError

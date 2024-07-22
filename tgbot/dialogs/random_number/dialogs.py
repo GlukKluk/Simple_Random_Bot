@@ -41,7 +41,7 @@ random_number_dialog = Dialog(
             state=RandomNumberSG.random_number_input_st,
             on_click=clear_stored_range,
         ),
-        Button(text=Const("Ще раз 🔄"), id="retry", on_click=retry),
+        Button(text=Const("🔄 Ще раз"), id="retry", on_click=retry),
         back_button,
         state=RandomNumberSG.random_number_generated_st,
         getter=get_random_number,
