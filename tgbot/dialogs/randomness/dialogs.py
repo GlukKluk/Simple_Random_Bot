@@ -1,28 +1,31 @@
 from aiogram_dialog import Dialog, Window
-from aiogram_dialog.widgets.kbd import Button, Row
+from aiogram_dialog.widgets.kbd import Start, Button, Row, Cancel
 from aiogram_dialog.widgets.text import Const
 
-from tgbot.states.user_states import RandomnessSG
-from .handlers import (
-    switch_to_random_number,
-    switch_to_generate_password
+from tgbot.states.user_states import (
+    RandomnessSG,
+
+    RandomNumberSG,
+    GeneratePasswordSG
 )
-from ..back import back_button
+
 
 randomness_dialog = Dialog(
     Window(
-        Const(text="Вибери потрібну дію, натиснувши на відповідну кнопку що розташована нижче ⬇️"),
+        Const(
+            text="Вибери потрібну дію, натиснувши на відповідну кнопку що розташована нижче ⬇️"
+        ),
         Row(
-            Button(
+            Start(
                 text=Const("🔢 Випадкове число"),
                 id="random_number",
-                on_click=switch_to_random_number,
+                state=RandomNumberSG.random_number_input_st,
             ),
-            Button(
+            Start(
                 text=Const("🔐 Згенерувати пароль"),
                 id="generate_password",
-                on_click=switch_to_generate_password,
-            )
+                state=GeneratePasswordSG.password_length_input_st
+            ),
         ),
         Row(
             Button(
@@ -34,14 +37,17 @@ randomness_dialog = Dialog(
                 text=Const("🎲 Кинути кубик"),
                 id="roll_the_dice",
                 # on_click=,
-            )
+            ),
         ),
         Button(
             text=Const("🧐 Інше"),
             id="other",
             # on_click=,
         ),
-        back_button,
-        state=RandomnessSG.randomness_st
+        Cancel(
+            text=Const("⬅️ Назад"),
+            id="back",
+        ),
+        state=RandomnessSG.randomness_st,
     )
 )

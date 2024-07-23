@@ -1,6 +1,6 @@
 from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.input import TextInput
-from aiogram_dialog.widgets.kbd import SwitchTo, Button
+from aiogram_dialog.widgets.kbd import SwitchTo, Button, Cancel
 from aiogram_dialog.widgets.text import Const, Format
 
 from tgbot.states.user_states import GeneratePasswordSG
@@ -13,7 +13,6 @@ from .handlers import (
     correct_generate_password_handler,
     error_generate_password_handler,
 )
-from ..back import back_button
 
 
 generate_password_dialog = Dialog(
@@ -25,9 +24,13 @@ generate_password_dialog = Dialog(
             on_success=correct_generate_password_handler,
             on_error=error_generate_password_handler,
         ),
-        back_button,
+        Cancel(
+            text=Const("⬅️ Назад"),
+            id="back",
+        ),
         state=GeneratePasswordSG.password_length_input_st,
     ),
+
     Window(
         Format(
             text="<b>Випадковий пароль:</b> <code>{password}</code>"
@@ -40,10 +43,14 @@ generate_password_dialog = Dialog(
             on_click=clear_stored_length,
         ),
         Button(text=Const("🔄 Ще раз"), id="retry", on_click=retry),
-        back_button,
+        Cancel(
+            text=Const("⬅️ Назад"),
+            id="back",
+        ),
         state=GeneratePasswordSG.password_length_generated_st,
         getter=get_password,
     ),
+
     Window(
         Const(
             text="<b>Неправильно!</b>"
@@ -55,7 +62,10 @@ generate_password_dialog = Dialog(
             on_success=correct_generate_password_handler,
             on_error=error_generate_password_handler,
         ),
-        back_button,
+        Cancel(
+            text=Const("⬅️ Назад"),
+            id="back",
+        ),
         state=GeneratePasswordSG.password_length_error_st
     ),
 )

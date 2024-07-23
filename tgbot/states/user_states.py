@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 from aiogram.fsm.state import State, StatesGroup
 
 
@@ -85,3 +87,20 @@ class StatisticSG(StatesGroup):
     """
 
     statistics_st = State()
+
+# :TODO test
+# @dataclass
+# class AllStatesGroup:
+#     start: StartSG = StartSG()
+#
+#     randomness: RandomnessSG = RandomnessSG()
+#
+#     random_number: RandomNumberSG = RandomNumberSG()
+#     generate_password: GeneratePasswordSG = GeneratePasswordSG()
+#     select_item: SelectItemSG = SelectItemSG()
+#     roll_the_dice: RollTheDiceSG = RollTheDiceSG()
+#
+#     about: AboutBotSG = AboutBotSG()
+#     additionally: AdditionallySG = AdditionallySG()
+#
+#     statistics: StatisticSG = StatisticSG()
