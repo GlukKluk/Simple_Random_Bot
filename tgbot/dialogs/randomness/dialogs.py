@@ -6,7 +6,8 @@ from tgbot.states.user_states import (
     RandomnessSG,
 
     RandomNumberSG,
-    GeneratePasswordSG
+    GeneratePasswordSG,
+    SelectItemSG
 )
 
 
@@ -28,10 +29,10 @@ randomness_dialog = Dialog(
             ),
         ),
         Row(
-            Button(
+            Start(
                 text=Const("🗃 Випадковий варіант зі списку"),
                 id="select_item",
-                # on_click=
+                state=SelectItemSG.items_input_st
             ),
             Button(
                 text=Const("🎲 Кинути кубик"),

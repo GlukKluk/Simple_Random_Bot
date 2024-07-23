@@ -34,7 +34,7 @@ generate_password_dialog = Dialog(
     Window(
         Format(
             text="<b>Випадковий пароль:</b> <code>{password}</code>"
-                 '\n\nЩоб згенерувати ще раз натисніть кнопку <b>"🔄 Ще раз"</b>'
+            '\n\nЩоб згенерувати ще раз натисніть кнопку <b>"🔄 Ще раз"</b>'
         ),
         SwitchTo(
             text=Const("✏️ Нова довжина"),
@@ -47,14 +47,14 @@ generate_password_dialog = Dialog(
             text=Const("⬅️ Назад"),
             id="back",
         ),
-        state=GeneratePasswordSG.password_length_generated_st,
+        state=GeneratePasswordSG.password_generated_st,
         getter=get_password,
     ),
 
     Window(
         Const(
             text="<b>Неправильно!</b>"
-                 "\nВведіть довжину пароля (менше, або рівно 4000):"
+            "\nВведіть довжину пароля (менше, або рівно 4000):"
         ),
         TextInput(
             id="password_length_input",
@@ -66,6 +66,6 @@ generate_password_dialog = Dialog(
             text=Const("⬅️ Назад"),
             id="back",
         ),
-        state=GeneratePasswordSG.password_length_error_st
+        state=GeneratePasswordSG.password_error_st,
     ),
 )

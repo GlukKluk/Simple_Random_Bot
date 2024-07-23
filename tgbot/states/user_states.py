@@ -44,8 +44,8 @@ class GeneratePasswordSG(StatesGroup):
     """
 
     password_length_input_st = State()
-    password_length_generated_st = State()
-    password_length_error_st = State()
+    password_generated_st = State()
+    password_error_st = State()
 
 
 class SelectItemSG(StatesGroup):
@@ -53,8 +53,9 @@ class SelectItemSG(StatesGroup):
     Third level: SELECT ITEM
     """
 
-    select_item_st = State()
     items_input_st = State()
+    item_selected_st = State()
+    item_error_st = State()
 
 
 class RollTheDiceSG(StatesGroup):

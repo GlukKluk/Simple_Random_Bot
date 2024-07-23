@@ -10,12 +10,13 @@ from aiogram_dialog.widgets.kbd import Button
 from tgbot.states.user_states import GeneratePasswordSG
 
 
-symbols = list(ascii_letters + digits + "/!#$%&?@:;-")
+SYMBOLS = list(ascii_letters + digits + "/!#$%&?@:;-")
 
 
 def password_check(text: str):
-    if text.isdigit() and int(text) <= 4000:
-        return text
+    if text.isdigit():
+        if int(text) <= 4000:
+            return text
 
     raise ValueError
 
@@ -23,7 +24,7 @@ def password_check(text: str):
 async def generate_password(dialog_manager: DialogManager, text: str = None):
     password = ""
 
-    password += "".join(choice(symbols) for _ in range(int(text)))
+    password += "".join(choice(SYMBOLS) for _ in range(int(text)))
     dialog_manager.dialog_data.update(password=password)
 
 
@@ -34,7 +35,7 @@ async def retry(callback: CallbackQuery, widget: Button, dialog_manager: DialogM
 
     await callback.answer("⚠️ Згенеровано")
     await dialog_manager.switch_to(
-        state=GeneratePasswordSG.password_length_generated_st,
+        state=GeneratePasswordSG.password_generated_st,
         show_mode=ShowMode.EDIT
     )
 
@@ -59,7 +60,7 @@ async def correct_generate_password_handler(
     await generate_password(dialog_manager, text)
 
     await dialog_manager.switch_to(
-        state=GeneratePasswordSG.password_length_generated_st,
+        state=GeneratePasswordSG.password_generated_st,
         show_mode=ShowMode.SEND
     )
 
@@ -71,6 +72,6 @@ async def error_generate_password_handler(
     error: ValueError,
 ):
     await dialog_manager.switch_to(
-        state=GeneratePasswordSG.password_length_error_st,
+        state=GeneratePasswordSG.password_error_st,
         show_mode=ShowMode.SEND
     )

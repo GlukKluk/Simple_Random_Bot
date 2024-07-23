@@ -12,13 +12,16 @@ from tgbot.states.user_states import RandomNumberSG
 def number_check(numbers_range: str):
     num1, num2 = numbers_range.split("-")
 
-    if fullmatch(pattern=r"\d+\s{0,1}-\s{0,1}\d+", string=numbers_range) and int(num1) < int(num2):
-        return numbers_range
+    if fullmatch(pattern=r"\d+\s{0,1}-\s{0,1}\d+", string=numbers_range):
+        if int(num1) < int(num2):
+            return numbers_range
 
     raise ValueError
 
 
-async def generate_random_number(dialog_manager: DialogManager, numbers_range: str = None):
+async def generate_random_number(
+    dialog_manager: DialogManager, numbers_range: str = None
+):
     num1, num2 = numbers_range.split("-")
 
     random_number = randint(int(num1), int(num2))
@@ -32,12 +35,13 @@ async def retry(callback: CallbackQuery, widget: Button, dialog_manager: DialogM
 
     await callback.answer("⚠️ Згенеровано")
     await dialog_manager.switch_to(
-        state=RandomNumberSG.random_number_generated_st,
-        show_mode=ShowMode.EDIT
+        state=RandomNumberSG.random_number_generated_st, show_mode=ShowMode.EDIT
     )
 
 
-async def clear_stored_range(callback: CallbackQuery, widget: Button, dialog_manager: DialogManager):
+async def clear_stored_range(
+    callback: CallbackQuery, widget: Button, dialog_manager: DialogManager
+):
     dialog_manager.dialog_data.pop("stored_range")
 
 
@@ -57,8 +61,7 @@ async def correct_random_number_handler(
     await generate_random_number(dialog_manager, numbers_range)
 
     await dialog_manager.switch_to(
-        state=RandomNumberSG.random_number_generated_st,
-        show_mode=ShowMode.SEND
+        state=RandomNumberSG.random_number_generated_st, show_mode=ShowMode.SEND
     )
 
 
@@ -69,6 +72,5 @@ async def error_random_number_handler(
     error: ValueError,
 ):
     await dialog_manager.switch_to(
-        state=RandomNumberSG.random_number_error_st,
-        show_mode=ShowMode.SEND
+        state=RandomNumberSG.random_number_error_st, show_mode=ShowMode.SEND
     )
