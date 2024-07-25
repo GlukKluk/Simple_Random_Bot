@@ -1,4 +1,5 @@
-from re import fullmatch
+from random import choice
+from re import search
 
 from aiogram.types import Message, CallbackQuery
 
@@ -10,14 +11,26 @@ from tgbot.states.user_states import SelectItemSG
 
 
 def items_check(text: str):
-    if fullmatch(pattern=r"(\b\w+\b)(,\s\1)*", string=text):
+    if search(pattern=r"(\b\w+\b)(,\s\1)*", string=text):
         return text
+
+    raise ValueError
 
 
 async def select_item(dialog_manager: DialogManager, text: str = None):
-    items_list = [
-        item if item[0] != " " else item[1:] for item in text.split(",")
-    ]
+    items_list = []
+
+    for i in text.strip(" ,").split(","):
+        if i == "":
+            continue
+
+        if i[0] != " ":
+            items_list.append(i)
+        else:
+            items_list.append(i[1:])
+
+    item = choice(items_list)
+    dialog_manager.dialog_data.update(item=item)
 
 
 async def retry(callback: CallbackQuery, widget: Button, dialog_manager: DialogManager):

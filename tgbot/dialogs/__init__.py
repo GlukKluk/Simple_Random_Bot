@@ -5,6 +5,7 @@ from .statistic.dialogs import statistic_dialog
 
 from .random_number.dialogs import random_number_dialog
 from .generate_password.dialogs import generate_password_dialog
+from .select_item.dialogs import select_item_dialog
 
 
 dialogs_list = [
@@ -15,6 +16,7 @@ dialogs_list = [
 
     random_number_dialog,
     generate_password_dialog,
+    select_item_dialog,
 ]
 
 __all__ = ["dialogs_list"]

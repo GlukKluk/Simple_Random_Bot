@@ -12,15 +12,14 @@ from .handlers import (
     clear_stored_items,
     correct_select_items_handler,
     error_select_items_handler,
-
 )
 
 
 select_item_dialog = Dialog(
     Window(
         Const(
-            text="Введіть діапазон у форматі:"
-            "\n<pre>&lt;число1&gt; - &lt;число2&gt;</pre>"
+            text="Введіть список значень у форматі:"
+                 "\n<pre>&lt;значення1, значення2, значення3, ... значення&gt;</pre>"
         ),
         TextInput(
             id="select_item_input",
@@ -41,7 +40,7 @@ select_item_dialog = Dialog(
             '\n\nЩоб згенерувати ще раз натисніть кнопку <b>"🔄 Ще раз"</b>'
         ),
         SwitchTo(
-            text=Const("✏️ Нова довжина"),
+            text=Const("✏️ Новий список"),
             id="new_length",
             state=SelectItemSG.items_input_st,
             on_click=clear_stored_items,
