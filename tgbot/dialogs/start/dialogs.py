@@ -1,10 +1,15 @@
 from aiogram_dialog import Dialog, Window
-from aiogram_dialog.widgets.kbd import Button, Row
+from aiogram_dialog.widgets.kbd import Button, Row, Start
 from aiogram_dialog.widgets.text import Const
 
-from tgbot.states.user_states import StartSG
+from tgbot.states.user_states import (
+    StartSG,
+    RandomnessSG,
+    AboutBotSG,
+    AdditionallySG,
+    StatisticSG
+)
 from .getters import is_admin_getter
-from .handlers import *
 
 start_dialog = Dialog(
     Window(
@@ -19,27 +24,27 @@ start_dialog = Dialog(
             "\n\n🔆 Цей бот абсолютно безкоштовний 🔆"
             '\n\n⬇️ Щоб розпочати натисніть <b>"🌀 Випадковість"</b>'
         ),
-        Button(
+        Start(
             text=Const(text="🌀 Випадковість"),
             id="randomness",
-            on_click=switch_to_randomness,
+            state=RandomnessSG.randomness_st
         ),
         Row(
-            Button(
+            Start(
                 text=Const(text="ℹ️ Про бота"),
                 id="about",
-                # on_click=
+                state=AboutBotSG.about_bot_st  # in process...
             ),
-            Button(
+            Start(
                 text=Const(text="🛠 Додатково"),
                 id="additionally",
-                # on_click=
+                state=AdditionallySG.additionally_st  # in process...
             ),
         ),
-        Button(
+        Start(
             text=Const("📊 Статистка"),
             id="statistic",
-            on_click=switch_to_statistic,
+            state=StatisticSG.statistics_st,
             when="is_admin",
         ),
         state=StartSG.start_st,
