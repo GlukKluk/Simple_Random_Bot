@@ -6,7 +6,7 @@ import betterlogging as bl
 from aiogram import Bot, Dispatcher
 from aiogram_dialog import setup_dialogs
 
-# from aiogram.fsm.storage.redis import RedisStorage
+from aiogram.fsm.storage.redis import RedisStorage, DefaultKeyBuilder
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums.parse_mode import ParseMode
@@ -72,17 +72,36 @@ def setup_logging():
     sqlalchemy_logger.setLevel(log_level)
 
 
+def get_storage() -> RedisStorage | MemoryStorage:
+    """
+    Return storage based on the provided configuration.
+
+
+    Returns:
+        Storage: The storage object based on the configuration.
+
+    """
+
+    if config.tg_bot.use_redis:
+        redis_conn = create_redis_connect()
+
+        return RedisStorage(
+            redis=redis_conn,
+            key_builder=DefaultKeyBuilder(with_bot_id=True, with_destiny=True)
+        )
+    else:
+        return MemoryStorage()
+
+
 def main():
     setup_logging()
-
-    # redis_conn = create_redis_connect()
+    storage = get_storage()
 
     bot = Bot(
-        token=config.tg_connect.bot_token,
+        token=config.tg_bot.bot_token,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
-    # dp = Dispatcher(storage=RedisStorage(redis=redis_conn))
-    dp = Dispatcher(storage=MemoryStorage(), admin_ids=config.tg_connect.admins_id)
+    dp = Dispatcher(storage=storage, admin_ids=config.tg_bot.admins_id)
 
     engine = create_db_engine()
     session_pool = create_session_pool(engine=engine)

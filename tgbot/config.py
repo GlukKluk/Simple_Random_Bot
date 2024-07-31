@@ -8,6 +8,7 @@ import dotenv
 class TgBot:
     bot_token: str
     admins_id: list[int]
+    use_redis: bool
 
 
 @dataclass
@@ -27,7 +28,7 @@ class WebhookSettings:
 
 @dataclass
 class Config:
-    tg_connect: TgBot
+    tg_bot: TgBot
     redis_connect: RedisConnect
     webhook_setting: WebhookSettings
 
@@ -36,9 +37,10 @@ def load_config():
     dotenv.load_dotenv()
 
     return Config(
-        tg_connect=TgBot(
+        tg_bot=TgBot(
             bot_token=os.getenv("BOT_TOKEN"),
-            admins_id=list(map(int, os.getenv("ADMINS_ID").split(",")))
+            admins_id=list(map(int, os.getenv("ADMINS_ID").split(","))),
+            use_redis=bool(os.getenv("USE_REDIS"))
         ),
 
         redis_connect=RedisConnect(
