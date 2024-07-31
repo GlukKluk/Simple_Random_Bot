@@ -40,7 +40,7 @@ def load_config():
         tg_bot=TgBot(
             bot_token=os.getenv("BOT_TOKEN"),
             admins_id=list(map(int, os.getenv("ADMINS_ID").split(","))),
-            use_redis=bool(os.getenv("USE_REDIS"))
+            use_redis=(os.getenv("USE_REDIS")).capitalize() == "True"
         ),
 
         redis_connect=RedisConnect(

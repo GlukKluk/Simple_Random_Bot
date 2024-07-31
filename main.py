@@ -14,9 +14,9 @@ from aiogram.enums.update_type import UpdateType
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 
 from database.setup import create_db_engine, create_session_pool, init_models
+
 from tgbot.config import load_config
 from tgbot.handlers.bot_commands import UserCommands
-from utils.redis_main import create_redis_connect
 
 from tgbot.dialogs import dialogs_list
 
@@ -27,6 +27,8 @@ from tgbot.callback_query_handlers.admin_callback import router as admin_callbac
 from tgbot.callback_query_handlers.user_callback import router as user_callback_router
 
 from tgbot.middlewares.db_middlewares import DatabaseMiddleware
+
+from utils.redis_main import create_redis_connect
 
 
 config = load_config()
