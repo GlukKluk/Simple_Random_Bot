@@ -57,10 +57,7 @@ async def correct_select_items_handler(
 ):
     dialog_manager.show_mode = ShowMode.NO_UPDATE
 
-    stored_items = dialog_manager.dialog_data.get("stored_items")
-
-    if not stored_items:
-        dialog_manager.dialog_data.update(stored_items=text)
+    dialog_manager.dialog_data.update(stored_items=text)
 
     await select_item(dialog_manager, text)
 

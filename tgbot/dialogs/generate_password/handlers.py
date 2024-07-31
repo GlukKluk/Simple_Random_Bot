@@ -40,10 +40,6 @@ async def retry(callback: CallbackQuery, widget: Button, dialog_manager: DialogM
     )
 
 
-async def clear_stored_length(callback: CallbackQuery, widget: Button, dialog_manager: DialogManager):
-    dialog_manager.dialog_data.pop("stored_length")
-
-
 async def correct_generate_password_handler(
         message: Message,
         widget: ManagedTextInput,
@@ -52,10 +48,7 @@ async def correct_generate_password_handler(
 ):
     dialog_manager.show_mode = ShowMode.NO_UPDATE
 
-    stored_length = dialog_manager.dialog_data.get("stored_length")
-
-    if not stored_length:
-        dialog_manager.dialog_data.update(stored_length=text)
+    dialog_manager.dialog_data.update(stored_length=text)
 
     await generate_password(dialog_manager, text)
 

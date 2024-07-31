@@ -18,7 +18,7 @@ statistic_dialog = Dialog(
             text=Const("🔄 Оновити"),
             id="update",
             state=StatisticSG.statistics_st,
-            on_click=lambda callback, button, dialog_manager: callback.answer("Оновлення")
+            on_click=lambda callback, button, dialog_manager: callback.answer("⏳ Оновлення")
         ),
         Cancel(
             text=Const("⬅️ Назад"),

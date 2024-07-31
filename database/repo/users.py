@@ -49,7 +49,7 @@ class UserRepo(BaseRepo):
 
         return result.scalars().all()
 
-    async def change_status(self, user_id: int, is_active: bool):
+    async def change_status(self, user_id, is_active: bool):
         stmt = (
             update(
                 TgUser

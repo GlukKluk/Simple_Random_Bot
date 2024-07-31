@@ -38,10 +38,6 @@ async def retry(callback: CallbackQuery, widget: Button, dialog_manager: DialogM
     )
 
 
-async def clear_stored_range(callback: CallbackQuery, widget: Button, dialog_manager: DialogManager):
-    dialog_manager.dialog_data.pop("stored_range")
-
-
 async def correct_random_number_handler(
     message: Message,
     widget: ManagedTextInput,
@@ -50,10 +46,7 @@ async def correct_random_number_handler(
 ):
     dialog_manager.show_mode = ShowMode.NO_UPDATE
 
-    stored_range = dialog_manager.dialog_data.get("stored_range")
-
-    if not stored_range:
-        dialog_manager.dialog_data.update(stored_range=numbers_range)
+    dialog_manager.dialog_data.update(stored_range=numbers_range)
 
     await generate_random_number(dialog_manager, numbers_range)
 
