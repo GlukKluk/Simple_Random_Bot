@@ -1,9 +1,10 @@
 import logging
 
-from aiogram_dialog import setup_dialogs
 from aiohttp import web
+import betterlogging as bl
 
 from aiogram import Bot, Dispatcher
+from aiogram_dialog import setup_dialogs
 
 # from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.fsm.storage.memory import MemoryStorage
@@ -42,7 +43,37 @@ async def on_startup(bot: Bot, engine) -> None:
     await bot.set_my_commands(commands=[UserCommands.start])
 
 
+def setup_logging():
+    """
+    Set up logging configuration for the application.
+
+    This method initializes the logging configuration for the application.
+    It sets the log level to INFO and configures a basic colorized log for
+    output. The log format includes the filename, line number, log level,
+    timestamp, logger name, and log message.
+
+    Returns:
+        None
+
+    Example usage:
+        setup_logging()
+    """
+    log_level = logging.INFO
+    bl.basic_colorized_config(level=log_level)
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(filename)s:%(lineno)d #%(levelname)-8s [%(asctime)s] - %(name)s - %(message)s",
+    )
+    logger = logging.getLogger(__name__)
+    logger.info("Starting bot")
+
+    sqlalchemy_logger = logging.getLogger("sqlalchemy.engine")
+    sqlalchemy_logger.setLevel(log_level)
+
+
 def main():
+    setup_logging()
 
     # redis_conn = create_redis_connect()
 
@@ -53,7 +84,7 @@ def main():
     # dp = Dispatcher(storage=RedisStorage(redis=redis_conn))
     dp = Dispatcher(storage=MemoryStorage(), admin_ids=config.tg_connect.admins_id)
 
-    engine = create_db_engine(echo=True)
+    engine = create_db_engine()
     session_pool = create_session_pool(engine=engine)
 
     dp.startup.register(on_startup)
@@ -70,7 +101,7 @@ def main():
 
     setup_dialogs(dp)
 
-    dp.update.outer_middleware(DatabaseMiddleware(session_pool))  # реєструємо мідлвар
+    dp.update.outer_middleware(DatabaseMiddleware(session_pool))
 
     app = web.Application()
 
