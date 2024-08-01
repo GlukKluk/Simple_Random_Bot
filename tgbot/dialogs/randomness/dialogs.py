@@ -7,7 +7,9 @@ from tgbot.states.user_states import (
 
     RandomNumberSG,
     GeneratePasswordSG,
-    SelectItemSG
+    SelectItemSG,
+
+    InDevelopmentSG
 )
 
 
@@ -34,16 +36,17 @@ randomness_dialog = Dialog(
                 id="select_item",
                 state=SelectItemSG.items_input_st
             ),
-            Button(
+            Start(  # :TODO not realized (in process)
                 text=Const("🎲 Кинути кубик"),
                 id="roll_the_dice",
+                state=InDevelopmentSG.in_development_st
                 # on_click=,
             ),
         ),
-        Button(
+        Start(
             text=Const("🧐 Інше"),
             id="other",
-            # on_click=,
+            state=InDevelopmentSG.in_development_st
         ),
         Cancel(
             text=Const("⬅️ Назад"),

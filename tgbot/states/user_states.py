@@ -89,6 +89,11 @@ class StatisticSG(StatesGroup):
 
     statistics_st = State()
 
+
+class InDevelopmentSG(StatesGroup):
+    in_development_st = State()
+
+
 # :TODO test
 # @dataclass
 # class AllStatesGroup:

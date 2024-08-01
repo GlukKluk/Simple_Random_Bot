@@ -1,5 +1,5 @@
 from aiogram_dialog import Dialog, Window
-from aiogram_dialog.widgets.kbd import Button, Row, Start
+from aiogram_dialog.widgets.kbd import Row, Start
 from aiogram_dialog.widgets.text import Const
 
 from tgbot.states.user_states import (
@@ -7,7 +7,8 @@ from tgbot.states.user_states import (
     RandomnessSG,
     AboutBotSG,
     AdditionallySG,
-    StatisticSG
+    StatisticSG,
+    InDevelopmentSG
 )
 from .getters import is_admin_getter
 
@@ -15,14 +16,14 @@ start_dialog = Dialog(
     Window(
         Const(
             text="<b>🤖 Випадковий Бот 🤖</b>"
-            "\n\n⚙ Що ж він вміє:"
-            "\n🔢 Згенерувати випадкове число"
-            "\n🔐 Згенерувати пароль"
-            "\n🗃 Вибрати випадковий варіант зі списку"
-            "\n🎲 Кинути кубик"
-            "\n<u>🔎 І багато іншого</u>"
-            "\n\n🔆 Цей бот абсолютно безкоштовний 🔆"
-            '\n\n⬇️ Щоб розпочати натисніть <b>"🌀 Випадковість"</b>'
+                 "\n\n⚙ Що ж він вміє:"
+                 "\n🔢 Згенерувати випадкове число"
+                 "\n🔐 Згенерувати пароль"
+                 "\n🗃 Вибрати випадковий варіант зі списку"
+                 "\n🎲 Кинути кубик"
+                 "\n<u>🔎 І багато іншого</u>"
+                 "\n\n🔆 Цей бот абсолютно безкоштовний 🔆"
+                 '\n\n⬇️ Щоб розпочати натисніть <b>"🌀 Випадковість"</b>'
         ),
         Start(
             text=Const(text="🌀 Випадковість"),
@@ -33,12 +34,14 @@ start_dialog = Dialog(
             Start(
                 text=Const(text="ℹ️ Про бота"),
                 id="about",
-                state=AboutBotSG.about_bot_st  # in process...
+                state=InDevelopmentSG.in_development_st
+                # state=AboutBotSG.about_bot_st  # in process...
             ),
             Start(
                 text=Const(text="🛠 Додатково"),
                 id="additionally",
-                state=AdditionallySG.additionally_st  # in process...
+                state=InDevelopmentSG.in_development_st
+                # state=AdditionallySG.additionally_st  # in process...
             ),
         ),
         Start(

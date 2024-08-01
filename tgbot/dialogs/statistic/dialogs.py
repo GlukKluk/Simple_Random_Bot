@@ -10,9 +10,9 @@ from .getters import get_statistics
 statistic_dialog = Dialog(
     Window(
         Format(
-            "👥 Загальна кількість користувачів: {count_users}"
-            "\n🔊 Активні користувачі: {count_active_users}"
-            "\n🔇 Неактивні користувачі: {count_deactivated_users}"
+            text="👥 Загальна кількість користувачів: {count_users}"
+                 "\n🔊 Активні користувачі: {count_active_users}"
+                 "\n🔇 Неактивні користувачі: {count_deactivated_users}"
         ),
         SwitchTo(
             text=Const("🔄 Оновити"),
