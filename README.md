@@ -1,4 +1,4 @@
-## 🇬🇧 English
+## English
 #### This is a Telegram bot: Random Bot 🎲 / Випадковий Бот 🎲**
 
 **⚙ What it can do:**
@@ -15,7 +15,7 @@
 
 * * *
 
-## 🇺🇦 Українська
+## Українська
 #### Це Telegram бот: Random Bot 🎲 / Випадковий Бот 🎲
 
 **⚙ Що він вміє:**
