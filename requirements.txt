@@ -4,3 +4,5 @@ redis
 aiogram
 sqlalchemy
 aiosqlite
+
+greenletgi
