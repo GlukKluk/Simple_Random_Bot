@@ -1,5 +1,5 @@
 ## English
-#### This is a Telegram bot: Random Bot 🎲 / Випадковий Бот 🎲**
+#### This is a Telegram bot: Random Bot 🎲 / Випадковий Бот 🎲
 
 **⚙ What it can do:**
 - 🔢 Generate a random number
@@ -13,7 +13,7 @@
 
 *Telegram: [@simple_random_bot](https://t.me/simple_random_bot)*
 
-* * *
+- - - 
 
 ## Українська
 #### Це Telegram бот: Random Bot 🎲 / Випадковий Бот 🎲
