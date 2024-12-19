@@ -10,4 +10,4 @@ aiohttp
 sqlalchemy
 aiosqlite
 
-greenletgi
+greenlet

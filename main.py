@@ -44,6 +44,8 @@ async def on_startup(bot: Bot, engine) -> None:
 
     await bot.set_my_commands(commands=[UserCommands.start])
 
+async def on_shutdown(bot):
+    await bot.delete_webhook()
 
 def setup_logging():
     """
@@ -109,6 +111,7 @@ def main():
     session_pool = create_session_pool(engine=engine)
 
     dp.startup.register(on_startup)
+    dp.shutdown.register(on_shutdown)
 
     dp.include_routers(
         user_handler_router,
