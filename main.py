@@ -37,6 +37,10 @@ async def on_startup(bot: Bot, engine) -> None:
     await bot.set_my_commands(commands=[UserCommands.start])
 
 
+async def on_shutdown(bot):
+    await bot.delete_webhook()
+
+
 def main():
 
     # redis_conn = create_redis_connect()
@@ -52,6 +56,7 @@ def main():
     session_pool = create_session_pool(engine=engine)
 
     dp.startup.register(on_startup)
+    dp.shutdown.register(on_shutdown)
 
     dp.include_routers(
         admin_handler_router,
