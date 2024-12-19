@@ -9,3 +9,5 @@ aiohttp
 
 sqlalchemy
 aiosqlite
+
+greenletgi

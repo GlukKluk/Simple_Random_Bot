@@ -44,8 +44,8 @@ def load_config():
         ),
 
         redis_connect=RedisConnect(
-            local_ip=os.getenv("REDIS_LOCAL_IP"),
-            local_port=int(os.getenv("REDIS_LOCAL_PORT"))
+            local_ip=os.getenv("REDIS_HOST"),
+            local_port=int(os.getenv("REDIS_PORT"))
         ),
 
         webhook_setting=WebhookSettings(
