@@ -14,6 +14,8 @@ class TgBot:
 class RedisConnect:
     local_ip: str
     local_port: int
+    local_db: int
+    local_password: str
 
 
 @dataclass
@@ -43,7 +45,9 @@ def load_config():
 
         redis_connect=RedisConnect(
             local_ip=os.getenv("REDIS_HOST"),
-            local_port=int(os.getenv("REDIS_PORT"))
+            local_port=int(os.getenv("REDIS_PORT")),
+            local_db=int(os.getenv("REDIS_DB")),
+            local_password=os.getenv("REDIS_PASSWORD")
         ),
 
         webhook_setting=WebhookSettings(
